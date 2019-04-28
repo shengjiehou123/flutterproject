@@ -37,6 +37,7 @@ class NewPageState extends State<NewsPage>{
 
   int page = 0;
   
+
  void requestNewsData(bool up) async{
     // var url = "http://api.diershoubing.com:5000/feed/tag/?tag_type=0&pn=0&rn=10&src=android&version=652&signal=Wifi";
     var url = "http://api.diershoubing.com:5000/feed/tag/?tag_type=0&pn=${page}&rn=10&src=android&version=652&signal=Wifi";
@@ -79,24 +80,24 @@ class NewPageState extends State<NewsPage>{
          page = 0;
          requestNewsData(up);
 
-  		   new Future.delayed(const Duration(milliseconds: 2009))
-                                            .then((val) {
-                   /*    注意:假如headerConfig的autoLoad开启了,就不得不等到下一针被重绘时才更新状态,不然会出现多次刷新的情况
-                          SchedulerBinding.instance.addPostFrameCallback(
-                              (_){
-                              _refreshController.sendBack(true, RefreshStatus.completed);
+  		  //  new Future.delayed(const Duration(milliseconds: 2009))
+        //                                     .then((val) {
+        //            /*    注意:假如headerConfig的autoLoad开启了,就不得不等到下一针被重绘时才更新状态,不然会出现多次刷新的情况
+        //                   SchedulerBinding.instance.addPostFrameCallback(
+        //                       (_){
+        //                       _refreshController.sendBack(true, RefreshStatus.completed);
 
-                              }
-                          );
-                  */
-                 _refreshController.sendBack(true, RefreshStatus.completed);
-           });
+        //                       }
+        //                   );
+        //           */
+        //          _refreshController.sendBack(true, RefreshStatus.completed);
+        //    });
 
 
-  		   new Future.delayed(const Duration(milliseconds: 2009))
-                                 .then((val) {
-                                   _refreshController.sendBack(true, RefreshStatus.completed);
-                             });
+  		  //  new Future.delayed(const Duration(milliseconds: 2009))
+        //                          .then((val) {
+        //                            _refreshController.sendBack(true, RefreshStatus.completed);
+        //                      });
 
   		}
   		else{
@@ -107,6 +108,12 @@ class NewPageState extends State<NewsPage>{
 
   }
  
+  @override
+  void initState() {
+    // TODO: implement initState
+    requestNewsData(true);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
