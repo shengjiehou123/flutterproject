@@ -1,35 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'NewsModle.dart';
 
 class NewsItem extends StatelessWidget{
-  NewsItem();
+  NewsItem(this.model);
+  NewsModle model;
   @override
   Widget build(BuildContext context) {
-    return new NewItemContainer();
+    return new NewItemContainer(model);
   }
 }
 
 class NewItemContainer extends StatefulWidget{
+  NewItemContainer(this.model);
+  NewsModle model;
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new NewItemContainerState();
+    return new NewItemContainerState(model);
   }
 }
 
 class NewItemContainerState extends State<NewItemContainer>{
        @override
+        NewItemContainerState(this.model);
+        NewsModle model;
+
   Widget build(BuildContext context) {
     // TODO: implement build
     Widget divider = Divider(height: 1,color: Colors.grey);
-    // var listImages = [];
-    // for(int i = 0; i < 3; i++){
-    //   var imag = Image(
-    //     image: AssetImage("Images/bitmap.png"),
-    //   );
-    //   listImages.add(imag);
-    // }
-    // final staticListImages =  listImages;
+
+    String acontent = model.acontent;
+    bool notUrl = !acontent.contains('.jpg');
+    List  imageurlList =  acontent.split(',');
+
+    List <Widget>images = List();
+    int count =  notUrl ? 0 : imageurlList.length;
+    if(count > 3){
+      count = 3;
+    }
+    for (var i = 0; i < count; i++) {
+          var con = Container(
+            margin: EdgeInsets.fromLTRB(i == 0 ? 0 : 10, 0, 0, 0),
+            child: Image(
+                   image: imageurlList != null ? NetworkImage(imageurlList[i]) : AssetImage("Images/bitmap.png"),
+                    fit: BoxFit.cover,
+                    width: 100,
+                    height: 100,
+                  ),
+          );
+          images.add(con);
+    }
+
     return Column(
       children: <Widget>[
         Row(
@@ -37,8 +59,7 @@ class NewItemContainerState extends State<NewItemContainer>{
                 Container(
                   margin: EdgeInsets.fromLTRB(10,10,10,10),
                   child: Image(
-                  image: AssetImage("Images/bitmap.png"),
-                  color: Colors.blue,
+                  image: ((model.game_info['game_icon'] != null) ? NetworkImage(model.game_info['game_icon']) : AssetImage("Images/bitmap.png")),
                   width: 40,
                   height: 40,
                  ),
@@ -48,7 +69,7 @@ class NewItemContainerState extends State<NewItemContainer>{
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('银河战士',
+                    Text(model.game_info['game_name'],
                     style: TextStyle(
                       fontSize: 15
                     ),),
@@ -66,26 +87,21 @@ class NewItemContainerState extends State<NewItemContainer>{
             ),
             Container(
               margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Text('padding的类型为EdgeInsetsGeometry，EdgeInsetsGeometry是EdgeInsets以及EdgeInsetsDirectional的基类。在实际使用中不涉及到国际化，例如适配阿拉伯地区等，一般都是使用EdgeInsets。EdgeInsetsDirectional光看命名就知道跟方向相关，因此它的四个边距不限定上下左右，而是根据方向来定作者：吹个大气球商业转载请联系作者获得授权，非商业转载请注明出处'),
+              child: Text(model.content,
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black
+              ),),
             ),
 
-            Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 20, 10),
+           Container(
+              margin: notUrl ? EdgeInsets.fromLTRB(0, 0, 0, 0) : EdgeInsets.fromLTRB(10, 0, 20, 10),
               child: Row(
+                mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Image(
-                   image: AssetImage("Images/bitmap.png"),
-                  ),
-                   Image(
-                   image: AssetImage("Images/bitmap.png"),
-                  ),
-                   Image(
-                   image: AssetImage("Images/bitmap.png"),
-                  ),
-                ],
+                children: images,
               ),
-            )
+            ),
       ],
     );
   }
