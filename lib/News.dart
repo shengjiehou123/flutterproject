@@ -20,7 +20,7 @@ class News extends StatelessWidget{
   }
 }
 
-class NewsPage extends StatefulWidget{
+class NewsPage extends StatefulWidget{ 
 
 
  @override
@@ -31,6 +31,9 @@ class NewsPage extends StatefulWidget{
 }
 
 class NewPageState extends State<NewsPage>{
+
+ 
+
   List models = List();
   List dataList = List();
   RefreshController _refreshController = new RefreshController();
@@ -39,7 +42,6 @@ class NewPageState extends State<NewsPage>{
   
 
  void requestNewsData(bool up) async{
-    // var url = "http://api.diershoubing.com:5000/feed/tag/?tag_type=0&pn=0&rn=10&src=android&version=652&signal=Wifi";
     var url = "http://api.diershoubing.com:5000/feed/tag/?tag_type=0&pn=${page}&rn=10&src=android&version=652&signal=Wifi";
     print(url);
     var response =  await http.get(url);
@@ -148,4 +150,6 @@ class NewPageState extends State<NewsPage>{
     ),
     );
   }
+
+  
 }

@@ -18,15 +18,6 @@
 @class FlutterEngine;
 
 /**
- * The name used for semantic update nofications via `NSNotificationCenter`.
- *
- * The object passed as the sender is the `FlutterViewController` associated
- * with the update.
- */
-FLUTTER_EXPORT
-extern NSNotificationName const FlutterSemanticsUpdateNotification;
-
-/**
  * A `UIViewController` implementation for Flutter views.
  *
  * Dart execution, channel communication, texture registration, and plugin registration
@@ -159,11 +150,6 @@ FLUTTER_EXPORT
  * view.
  */
 @property(nonatomic, getter=isViewOpaque) BOOL viewOpaque;
-
-/**
- * The `FlutterEngine` instance for this view controller.
- */
-@property(weak, nonatomic, readonly) FlutterEngine* engine;
 
 @end
 

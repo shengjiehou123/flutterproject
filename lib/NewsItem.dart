@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'NewsModle.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class NewsItem extends StatelessWidget{
   NewsItem(this.model);
@@ -21,7 +22,9 @@ class NewItemContainer extends StatefulWidget{
   }
 }
 
-class NewItemContainerState extends State<NewItemContainer>{
+class NewItemContainerState extends State<NewItemContainer> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
        @override
         NewItemContainerState(this.model);
         NewsModle model;
@@ -40,18 +43,30 @@ class NewItemContainerState extends State<NewItemContainer>{
       count = 3;
     }
     for (var i = 0; i < count; i++) {
+       var imageUrl = imageurlList[i];
+       
+       if(imageUrl.length >=4){
+       var prefixStr = imageUrl.substring(0,4);
+       if(prefixStr != 'http'){
+         imageUrl = 'http://api.diershoubing.com:5000/feed/tag/?tag_type=0&pn=0&rn=10&src=android&version=652&signal=Wifi';
+        }
+       }
+
           var con = Container(
             margin: EdgeInsets.fromLTRB(i == 0 ? 0 : 10, 0, 0, 0),
-            child: Image(
-                   image: imageurlList != null ? NetworkImage(imageurlList[i]) : AssetImage("Images/bitmap.png"),
+            child:  FadeInImage.assetNetwork(
+                     placeholder: 'Images/bitmap.png',
+                     image: imageUrl,
                     fit: BoxFit.cover,
                     width: 100,
                     height: 100,
-                  ),
+                   ),
+                   
           );
           images.add(con);
     }
 
+   
     return Column(
       children: <Widget>[
         Row(
