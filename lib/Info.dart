@@ -15,12 +15,15 @@ class Info extends StatefulWidget{
 }
 
 class InfoDate extends State<Info> with AutomaticKeepAliveClientMixin{
-@override
-bool get wantKeepAlive => true; 
+
+  @override
+  bool get wantKeepAlive => true;
   List models = List();
   List feedsData = List();
   RefreshController _refreshController = RefreshController();
   int page = 0;
+
+
 
   void requestData(bool up) async{
     var url = "http://api.diershoubing.com:5000/feed/tag/?tag_type=1&pn=${page}&rn=10&src=android&version=652&signal=Wifi";
@@ -60,10 +63,14 @@ bool get wantKeepAlive => true;
   }
 
   void _onRefresh(bool up){
-     page = up ? page++:0;
+     page = up ? 0 : ++page;
      requestData(up);
   }
 
+void _OnOffsetChange(bool up, double offset){
+
+  }
+    
    @override
   void initState() {
     // TODO: implement initState
@@ -82,6 +89,7 @@ bool get wantKeepAlive => true;
       body: SmartRefresher(
         controller: _refreshController,
         onRefresh: _onRefresh,
+        onOffsetChange: _OnOffsetChange,
         enablePullUp:true,
         enablePullDown: true,
         child: ListView.separated(

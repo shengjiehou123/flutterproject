@@ -30,13 +30,16 @@ class NewsPage extends StatefulWidget{
   }
 }
 
-class NewPageState extends State<NewsPage>{
+class NewPageState extends State<NewsPage> with AutomaticKeepAliveClientMixin{
 
- 
-
+  @override
+  bool get wantKeepAlive => true;
   List models = List();
   List dataList = List();
   RefreshController _refreshController = new RefreshController();
+  ScrollController _scrollController = ScrollController();
+
+   
 
   int page = 0;
   
@@ -125,9 +128,18 @@ class NewPageState extends State<NewsPage>{
     
   
     Widget divider  = Divider(height: 1, color:Colors.grey);
+
+    void tapBack(){
+
+
+     _scrollController.animateTo(.0,duration:Duration(milliseconds:200),curve: Curves.ease);
+
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('News'),
+        actions: <Widget>[Button("滚动到顶部", null, tapBack)],
       ),
       body: SmartRefresher(
       controller: _refreshController,
@@ -141,6 +153,7 @@ class NewPageState extends State<NewsPage>{
             NewsModle model = models[index];
             return new NewsItem(model);
           },
+          controller: _scrollController,
           separatorBuilder: (BuildContext context, int index){
             return divider;
           },
@@ -152,4 +165,45 @@ class NewPageState extends State<NewsPage>{
   }
 
   
+}
+
+class Button extends StatefulWidget{
+   Button(this.title,this.image,this.tapBack);
+    String title;
+    Image  image;
+    Function  tapBack;
+
+    @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new ButtonState();
+  }
+
+}
+
+class ButtonState extends State<Button>{
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    
+  }
+
+ @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return GestureDetector(
+       child: Container(
+         child: Text(widget.title),
+         padding: EdgeInsets.fromLTRB(0, 20, 10, 0),
+       ),
+       onTap: (){
+         setState(() {
+            widget.tapBack();
+         });
+       },
+    );
+  }
+
+
 }

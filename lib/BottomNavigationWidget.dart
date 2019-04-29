@@ -11,9 +11,8 @@ class BottomNavigationWidge extends StatefulWidget{
   }
 }
 
-class  BottomNavigationWidgeState extends State<BottomNavigationWidge> with AutomaticKeepAliveClientMixin{
-   @override
- bool get wantKeepAlive => true;
+class  BottomNavigationWidgeState extends State<BottomNavigationWidge>{
+ 
     final _bottomNavigationColor = Colors.blue;
     int _currentIndex = 0;
     List<Widget> pages = List<Widget>();
